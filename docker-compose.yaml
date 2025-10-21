@@ -1,0 +1,20 @@
+# docker-compose.yml
+services:
+  autopost:
+    build: .
+    environment:
+      SITE_FEED_URL: https://yoursite.com/atom.xml
+      STATE_FILE: /data/state.json
+      # Bluesky (optional)
+      BSKY_HANDLE: yourname.bsky.social
+      BSKY_PASSWORD: your-app-password
+      # Mastodon (optional)
+      MASTODON_BASE_URL: https://mastodon.social
+      MASTODON_ACCESS_TOKEN: xxx
+      # Where to send the X intent link (choose one you like)
+      PUSH_WEBHOOK: https://api.pushover.net/1/messages.json
+      PUSH_TOKEN: xxx
+      PUSH_USER: yyy
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
