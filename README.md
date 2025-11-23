@@ -1,28 +1,28 @@
 # cross_poster
 
-A lightweight Python service to automatically cross-post updates from an RSS/Atom feed to social platforms like Bluesky and Mastodon, with optional manual approval via a push notification.
+A lightweight Python service that monitors an RSS/Atom feed and automatically cross-posts new entries to social platforms such as Bluesky and Mastodon. It also supports sending a push notification with a preformatted Twitter intent link for optional manual approval.
 
 ## Features
 
-- Monitors a specified RSS/Atom feed for new entries
-- Automatically posts new entries to Bluesky and Mastodon
-- Sends a push notification containing a preformatted X (Twitter) intent link for quick manual approval
-- Maintains state to avoid duplicate postings
-- Runs as a Docker container for easy deployment
+- Continuously monitors a specified RSS/Atom feed for new entries
+- Automatically posts new entries to Bluesky and Mastodon if configured
+- Sends a push notification containing a Twitter intent link to enable manual approval
+- Maintains posting state to prevent duplicate posts
+- Runs as a Docker container for straightforward deployment and management
 
 ## Tech Stack
 
-- Python 3.12 (using `python:3.12-slim` base image)
-- Libraries: `feedparser`, `atproto` (Bluesky client), `mastodon.py`, `requests`
-- Containerization: Docker, Docker Compose
+- Python 3.12 (using the `python:3.12-slim` Docker base image)
+- Python libraries: `feedparser`, `atproto` (Bluesky client), `mastodon.py`, `requests`
+- Containerization with Docker and Docker Compose
 
 ## Getting Started
 
 ### Prerequisites
 
 - Docker and Docker Compose installed on your system
-- Access credentials for Bluesky and/or Mastodon if you want to enable posting
-- A push notification service webhook (e.g., Pushover) if you want manual approval notifications
+- Optional: Access credentials for Bluesky and/or Mastodon
+- Optional: Push notification service webhook (e.g., Pushover) for manual approval notifications
 
 ### Installation & Running
 
@@ -41,13 +41,13 @@ cd cross_poster
 - Mastodon credentials (optional): `MASTODON_BASE_URL`, `MASTODON_ACCESS_TOKEN`
 - Push notification webhook (optional): `PUSH_WEBHOOK`, `PUSH_TOKEN`, `PUSH_USER`
 
-3. Start the service:
+3. Build and start the service:
 
 ```bash
 docker-compose up --build -d
 ```
 
-4. Logs can be viewed with:
+4. To view logs:
 
 ```bash
 docker-compose logs -f
@@ -59,22 +59,16 @@ docker-compose logs -f
 ├── app/
 │   └── run.py          # Main application script
 ├── Dockerfile          # Docker image definition
-└── docker-compose.yaml # Service orchestration and environment config
+└── docker-compose.yaml # Service orchestration and environment configuration
 ```
 
 - `app/run.py` contains the main logic for polling the feed, posting to social platforms, and sending push notifications.
-- `Dockerfile` defines the Python environment and dependencies.
-- `docker-compose.yaml` configures the container, environment variables, volume mounts, and restart policy.
 
 ## Future Work / Roadmap
 
-- Add support for more social platforms or notification services
-- Improve error handling and logging
-- Add configuration for polling interval
-- Implement more granular state management to handle feed entry updates or deletions
-- Provide a web interface for configuration and monitoring
-- Add tests and CI pipeline
-
----
-
-This project assumes the user has basic familiarity with Docker and environment variable configuration. The service is designed for simplicity and extensibility.
+- Add support for additional social platforms beyond Bluesky and Mastodon
+- Implement more robust error handling and logging
+- Provide configuration options for polling intervals and batch sizes
+- Add unit and integration tests
+- Support multiple feeds and customizable post formatting
+- Improve security around credential management
