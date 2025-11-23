@@ -3,57 +3,51 @@ slug: "github-cross-poster"
 title: "cross_poster"
 repo: "justin-napolitano/cross_poster"
 githubUrl: "https://github.com/justin-napolitano/cross_poster"
-generatedAt: "2025-11-23T08:31:40.891027Z"
+generatedAt: "2025-11-23T08:47:33.033983Z"
 source: "github-auto"
 ---
 
 
-# Technical Overview of cross_poster
+# cross_poster: Technical Overview and Implementation Notes
 
-## Motivation
+## Motivation and Problem Statement
 
-The project addresses a common need to automate the distribution of content updates from a single source feed to multiple social platforms. Instead of manually reposting or relying on platform-specific tools, this service centralizes the process, reducing friction and ensuring consistent presence across networks.
+Managing multiple social media accounts and keeping them up to date with content from a single source can be cumbersome. Manual cross-posting is inefficient and error-prone. This project addresses the need for an automated, lightweight service that monitors an RSS or Atom feed and posts new entries to social platforms without duplication. It also offers a mechanism for manual approval via push notifications, balancing automation with control.
 
-## Problem Statement
+## Architecture and Components
 
-Content creators and site maintainers often publish updates via RSS or Atom feeds but lack a streamlined way to propagate those updates to decentralized or federated social platforms like Bluesky and Mastodon. Manual reposting is tedious and error-prone, and existing tools may not support all platforms or require complex setup. Additionally, some users prefer to approve posts before publishing, which requires a lightweight approval mechanism.
+The core of cross_poster is a Python script (`app/run.py`) that runs an infinite loop to poll a configured RSS/Atom feed at fixed intervals (every 5 minutes). It uses the `feedparser` library to parse feed entries and compares them against a stored state to avoid reposting the same content.
 
-## Architecture and Implementation
+Posting to social platforms is abstracted into separate functions:
 
-The core of the system is a Python script (`app/run.py`) that:
+- `post_bsky(text)`: Uses the `atproto` client to authenticate and post to Bluesky. Requires environment variables `BSKY_HANDLE` and `BSKY_PASSWORD`.
+- `post_masto(text)`: Uses the `mastodon.py` library to post to Mastodon instances. Requires `MASTODON_BASE_URL` and `MASTODON_ACCESS_TOKEN`.
 
-- Polls a configured RSS/Atom feed at fixed intervals (every 5 minutes).
-- Parses the latest entries using `feedparser`.
-- Maintains a local state file (`state.json`) to track which entries have already been posted.
-- For each new entry:
-  - Constructs a post text combining the entry title and URL.
-  - Posts directly to Bluesky using the `atproto` client if credentials are provided.
-  - Posts directly to Mastodon using the `mastodon.py` client if credentials are provided.
-  - Sends a push notification containing a preformatted X (formerly Twitter) intent URL to facilitate one-tap manual approval.
+For optional manual approval, the service generates a Twitter intent URL with the post text and sends it as a push notification. This is implemented in `push_intent(text)`, which posts to a configured webhook (e.g., Pushover) using environment variables `PUSH_WEBHOOK`, `PUSH_TOKEN`, and `PUSH_USER`.
 
-### State Management
+State management is handled by reading and writing a JSON file (`/data/state.json` by default) that tracks the IDs of posts already processed. This prevents duplicate postings across restarts.
 
-State is persisted in a JSON file mounted into the container. This file stores a list of IDs of feed entries that have already been processed, preventing duplicate posts across restarts.
+## Deployment and Configuration
 
-### Posting Logic
+The service is containerized using Docker, with a `Dockerfile` based on the `python:3.12-slim` image. Dependencies are installed via pip (`feedparser`, `atproto`, `mastodon.py`, `requests`). The application code is copied into the container and executed via `python run.py`.
 
-- **Bluesky:** Uses the `atproto` client to login with handle and password, then sends a post.
-- **Mastodon:** Uses the `mastodon.py` client with base URL and access token to post a status.
-- **Push Notification:** Sends a POST request to a configured webhook URL (e.g., Pushover) with a message containing the X intent link.
+Docker Compose is used for orchestration, allowing environment variables to be set for feed URL, credentials, and notification settings. A volume is mounted to persist the state JSON file.
 
-### Containerization
+## Implementation Details
 
-The service is packaged as a Docker container based on the official Python 3.12 slim image. Dependencies are installed via pip in the Dockerfile. The container exposes no ports but runs continuously, orchestrated via `docker-compose`.
-
-Environment variables provide all configuration, including feed URL, credentials, and notification settings.
+- The main loop parses the feed and processes up to the five most recent entries in chronological order, ensuring posts appear in the correct sequence.
+- The code uses environment variables extensively for configuration, promoting flexibility and security.
+- Posting functions check for the presence of required credentials before attempting to post, allowing partial configuration (e.g., only Bluesky or only Mastodon).
+- The push notification sends a preformatted Twitter intent link, enabling quick manual approval or editing before posting on Twitter.
+- Error handling is minimal and could be improved; exceptions during state loading default to an empty state.
 
 ## Practical Considerations
 
-- The polling interval is hardcoded to 5 minutes; this could be parameterized.
-- Error handling is minimal; failures in posting or network errors are silently ignored or cause retries on the next cycle.
-- The push notification mechanism is generic and can be replaced with any service that accepts HTTP POST.
-- The service assumes that feed entries have unique IDs or URLs.
+- The service assumes reliable access to the feed URL and social platform APIs.
+- Credentials are stored as environment variables; secure handling is the responsibility of the deployer.
+- The polling interval is fixed at 5 minutes; this could be parameterized.
+- The state file is stored on a mounted volume to persist across container restarts.
 
 ## Summary
 
-This project exemplifies a minimal, practical approach to cross-posting feed content to multiple social platforms with optional manual approval. It leverages existing Python clients and containerization to provide a deployable, extensible tool. Future enhancements could improve robustness, configurability, and platform support.
+cross_poster is a straightforward, extensible tool for automating cross-posting from RSS/Atom feeds to Bluesky and Mastodon, with optional manual approval notifications. Its design favors simplicity and containerized deployment, making it suitable for personal or small-scale use. Future improvements could enhance robustness, platform support, and configurability.
