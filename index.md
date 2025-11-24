@@ -1,12 +1,29 @@
 ---
-slug: "github-cross-poster"
-title: "cross_poster"
-repo: "justin-napolitano/cross_poster"
-githubUrl: "https://github.com/justin-napolitano/cross_poster"
-generatedAt: "2025-11-23T08:47:33.033983Z"
-source: "github-auto"
+slug: github-cross-poster
+title: 'cross_poster: Automated RSS to Bluesky and Mastodon Cross-Posting'
+repo: justin-napolitano/cross_poster
+githubUrl: https://github.com/justin-napolitano/cross_poster
+generatedAt: '2025-11-23T08:47:33.033983Z'
+source: github-auto
+summary: >-
+  Technical overview and implementation of cross_poster, a Dockerized Python service that automates
+  posting RSS/Atom feed entries to Bluesky and Mastodon with optional manual approval.
+tags:
+  - rss-feed
+  - cross-posting
+  - bluesky
+  - mastodon
+  - docker
+  - python
+seoPrimaryKeyword: cross-posting
+seoSecondaryKeywords:
+  - rss feed
+  - bluesky
+  - mastodon
+  - docker
+  - python
+seoOptimized: true
 ---
-
 
 # cross_poster: Technical Overview and Implementation Notes
 
@@ -51,3 +68,4 @@ Docker Compose is used for orchestration, allowing environment variables to be s
 ## Summary
 
 cross_poster is a straightforward, extensible tool for automating cross-posting from RSS/Atom feeds to Bluesky and Mastodon, with optional manual approval notifications. Its design favors simplicity and containerized deployment, making it suitable for personal or small-scale use. Future improvements could enhance robustness, platform support, and configurability.
+
