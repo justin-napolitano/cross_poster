@@ -23,6 +23,11 @@ seoSecondaryKeywords:
   - docker
   - python
 seoOptimized: true
+topicFamily: automation
+topicFamilyConfidence: 0.95
+topicFamilyNotes: >-
+  The post focuses on automating cross-posting from RSS feeds to social media using a Python service
+  containerized with Docker, matching well the 'Automation' family description and example slugs.
 ---
 
 # cross_poster: Technical Overview and Implementation Notes
@@ -68,4 +73,5 @@ Docker Compose is used for orchestration, allowing environment variables to be s
 ## Summary
 
 cross_poster is a straightforward, extensible tool for automating cross-posting from RSS/Atom feeds to Bluesky and Mastodon, with optional manual approval notifications. Its design favors simplicity and containerized deployment, making it suitable for personal or small-scale use. Future improvements could enhance robustness, platform support, and configurability.
+
 
