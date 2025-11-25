@@ -1,13 +1,13 @@
 ---
 slug: github-cross-poster
-title: 'cross_poster: Automated RSS to Bluesky and Mastodon Cross-Posting'
+title: Automate Social Media Cross-Posting with cross_poster
 repo: justin-napolitano/cross_poster
 githubUrl: https://github.com/justin-napolitano/cross_poster
 generatedAt: '2025-11-23T08:47:33.033983Z'
 source: github-auto
 summary: >-
-  Technical overview and implementation of cross_poster, a Dockerized Python service that automates
-  posting RSS/Atom feed entries to Bluesky and Mastodon with optional manual approval.
+  Learn how to implement cross_poster for automated social media updates from
+  RSS feeds to Bluesky and Mastodon.
 tags:
   - rss-feed
   - cross-posting
@@ -15,19 +15,25 @@ tags:
   - mastodon
   - docker
   - python
-seoPrimaryKeyword: cross-posting
+  - rss
+  - feedparser
+  - automation
+seoPrimaryKeyword: automated social media cross-posting
 seoSecondaryKeywords:
-  - rss feed
-  - bluesky
-  - mastodon
-  - docker
-  - python
+  - rss feed automation
+  - bluesky posting
+  - mastodon integration
+  - docker deployment
+  - push notifications
 seoOptimized: true
 topicFamily: automation
 topicFamilyConfidence: 0.95
 topicFamilyNotes: >-
-  The post focuses on automating cross-posting from RSS feeds to social media using a Python service
-  containerized with Docker, matching well the 'Automation' family description and example slugs.
+  The post focuses on automating cross-posting from RSS feeds to social media
+  using a Python service containerized with Docker, matching well the
+  'Automation' family description and example slugs.
+kind: project
+id: github-cross-poster
 ---
 
 # cross_poster: Technical Overview and Implementation Notes
