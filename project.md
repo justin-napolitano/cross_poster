@@ -7,8 +7,8 @@ githubUrl: https://github.com/justin-napolitano/cross_poster
 generatedAt: '2025-11-24T21:34:23.222Z'
 source: github-auto
 summary: >-
-  This guide covers a Python service that monitors RSS feeds and cross-posts to
-  social platforms like Bluesky and Mastodon.
+  This guide covers a Python service that monitors RSS feeds and cross-posts to social platforms
+  like Bluesky and Mastodon.
 tags:
   - python
   - docker
@@ -26,8 +26,8 @@ seoSecondaryKeywords:
   - python cross-posting
   - push notifications
 seoOptimized: true
-topicFamily: null
-topicFamilyConfidence: null
+topicFamily: automation
+topicFamilyConfidence: 0.9
 kind: project
 entryLayout: project
 showInProjects: true
@@ -108,4 +108,5 @@ docker-compose logs -f
 - Add unit and integration tests
 - Support multiple feeds and customizable post formatting
 - Improve security around credential management
+
 
